@@ -94,14 +94,44 @@ function scanForNearestOre(scanner, radius)
                 end
             end
 
-local scanner = peripheral.find("geoscanner")
+            -- Nothing found
+            if noOreFound then
+                closestName = "No ore found."
+                closestDist = math.huge
+                closestX = math.huge
+                closestY = math.huge
+                closestZ = math.huge
+            end
+        end
+
+        -- Print the ore data
+        print("Ore: " .. closestName)
+        print("X: " .. calc1dDistance(0, closestX))
+        print("Y: " .. calc1dDistance(0, closestY))
+        print("Z: " .. calc1dDistance(0, closestZ))
+
+        -- Check if manual cooldown
+        if MANUAL_PULSE_COOLDOWN then
+            -- Wait for the cooldown time
+            os.sleep(PULSE_COOLDOWN)
+        end
+    end
+end
+
+local scanner = peripheral.find("geoscanner") -- get the geoscanner of the pocket computer
 local continue = true
-while continue do
+while continue do --
   printHeader(scanner)
   print("[d] for diamonds.")
   print("[n] for netherite.")
   local event, key = os.pullEvent("key")
   if key = keys.d then
+    continue = false
     BLOCK_TARGET_TAG = "forge:ores/diamond"
   else if key = keys.n then
+    continue = false
     BLOCK_TARGET_TAG = "forge:ores/netherite_scrap"
+        else
+            term.clear()
+            term.setCursorPos(1,1)
+            print("error please choose diamonds or netherite")
